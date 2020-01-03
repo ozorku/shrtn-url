@@ -3,9 +3,9 @@
     <h2 class="app-name">SHRTN</h2>
     <form @submit.prevent="submitForm">
       <input id="inputUrl" type="text" placeholder="e.g www.example.com" v-model="inputUrl" />
-      <button>GO!</button>
+      <button>{{buttonText}}</button>
     </form>
-    <div v-show="showGeneratedUrl" class="clipboard" v-clipboard="shortenedUrl" v-on:click>
+    <div v-show="showGeneratedUrl" class="clipboard" v-clipboard="() => shortenedUrl" v-on:click>
       <p>Link Generated!</p>
       <div class="generated-shortcode">
         <span>{{shortenedUrl}}</span>
@@ -29,7 +29,8 @@ export default {
     return {
       inputUrl: "",
       shortenedUrl: "",
-      showGeneratedUrl: false
+      showGeneratedUrl: false,
+      buttonText: "GO!"
     };
   },
   components: {
@@ -41,11 +42,11 @@ export default {
       //disable input and button
       document.querySelector("#inputUrl").setAttribute("disabled", "disabled");
       document.querySelector("button").setAttribute("disabled", "disabled");
+      this.buttonText = "working...";
 
       axios
         .post(`https://api.shrtco.de/v2/shorten?url=${this.inputUrl}`)
         .then(response => {
-          console.log(response.data);
           if (!response.data.ok) {
             return;
           }
@@ -55,6 +56,7 @@ export default {
           this.inputUrl = "";
           document.querySelector("#inputUrl").removeAttribute("disabled");
           document.querySelector("button").removeAttribute("disabled");
+          this.buttonText = "GO!";
         });
     }
   }
@@ -158,6 +160,49 @@ form {
     border-bottom-left-radius: 0;
     width: 20%;
     color: white;
+
+    animation: animate-gradient;
+    animation-duration: 1s;
+    animation-fill-mode: both;
+    animation-iteration-count: infinite;
+    animation-play-state: running;
+    animation-timing-function: initial;
+    animation-direction: alternate;
+
+    &:disabled {
+      background: gray;
+      animation: none;
+    }
+
+    @keyframes animate-gradient {
+      0% {
+        background: #f5af19; /* fallback for old browsers */
+        background: -webkit-linear-gradient(
+          to right,
+          #f12711,
+          #f5af19
+        ); /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(
+          to right,
+          #f12711,
+          #f5af19
+        ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+      }
+
+      100% {
+        background: #f12711; /* fallback for old browsers */
+        background: -webkit-linear-gradient(
+          to right,
+          #f5af19,
+          #f12711
+        ); /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(
+          to right,
+          #f5af19,
+          #f12711
+        ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+      }
+    }
   }
 }
 </style>
