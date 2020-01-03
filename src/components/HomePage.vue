@@ -45,13 +45,11 @@ export default {
       axios
         .post(`https://api.shrtco.de/v2/shorten?url=${this.inputUrl}`)
         .then(response => {
-          console.log(response.data);
           if (!response.data.ok) {
             return;
           }
 
           this.shortenedUrl = response.data.result.full_short_link2;
-          console.log(typeof this.shortenedUrl);
           this.showGeneratedUrl = true;
           this.inputUrl = "";
           document.querySelector("#inputUrl").removeAttribute("disabled");
