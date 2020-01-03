@@ -1,4 +1,6 @@
 # shrtn-url
+A URL shortener using shrtco.de's API
+
 
 ## Project setup
 ```
