@@ -5,7 +5,12 @@
       <input id="inputUrl" type="text" placeholder="e.g www.example.com" v-model="inputUrl" />
       <button>{{buttonText}}</button>
     </form>
-    <div v-show="showGeneratedUrl" class="clipboard" v-clipboard="() => shortenedUrl" v-on:click>
+    <div
+      v-show="showGeneratedUrl"
+      class="clipboard"
+      v-clipboard="() => shortenedUrl"
+      v-on:click="showNotification"
+    >
       <p>Link Generated!</p>
       <div class="generated-shortcode">
         <span>{{shortenedUrl}}</span>
@@ -58,6 +63,10 @@ export default {
           document.querySelector("button").removeAttribute("disabled");
           this.buttonText = "GO!";
         });
+    },
+
+    showNotification() {
+      this.$emit("inputData");
     }
   }
 };
