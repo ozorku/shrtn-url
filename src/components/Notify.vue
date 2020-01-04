@@ -18,10 +18,5 @@
   left: 50%;
   transform: translate(-50%, -50%);
   font-size: 14px;
-  display: none;
-
-  &.show {
-    display: block;
-  }
 }
 </style>
